@@ -37,11 +37,13 @@ class TokyoDataSet(Dataset):
         self.transforms = transforms
         self.utm = [[mat[adder+2][0][i], mat[adder+2][1][i]] for i in range(self.length)]
 
+
         for idx in tqdm(range(self.length)):
             self.data[idx]['filename'] = mat[adder + 1][idx][0][0]
             self.data[idx]['utm_coordinate'] = (mat[adder + 2][0][idx], mat[adder + 2][1][idx])
             self.data[idx]['timestamp'] = mat[adder + 3][0][idx]
             self.data[idx]['image'] = os.path.join(self.image_dir, self.data[idx]['filename'])
+            self.data[idx]['original_image'] = os.path.join(self.image_dir, self.data[idx]['filename'])
 
             if mode == 'query':
                 self.data[idx]['pos'] = [-1] * 10
@@ -56,6 +58,7 @@ class TokyoDataSet(Dataset):
 
         ret = copy.deepcopy(self.data[idx])
         ret['image'] = self.transforms(Image.open(self.data[idx]['image']))
+        ret['original_image'] = Image.open(self.data[idx]['original_image'])
         return ret
 
     def generate_logger(self, type):

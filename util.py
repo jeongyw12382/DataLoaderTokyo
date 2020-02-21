@@ -28,12 +28,18 @@ def query_pos_neg(dbloader, queryloader, pos_threshold=posThr, neg_threshold=neg
     pos = []
     neg = []
     for mat in dist > neg_threshold:
-        neg.append(np.random.choice(np.argwhere(mat).T[0], 10))
-    for mat in dist < pos_threshold:
-        pos.append(np.random.choice(np.argwhere(mat).T[0], 10))
+        neg.append(np.random.choice(np.argwhere(mat).T[0], 20))
+    for i, mat in enumerate(dist < pos_threshold):
+        candidates = np.random.permutation(np.argwhere(mat).T[0])
+        val = dist[i][candidates]
+        pos.append(candidates[np.argsort(val)[:20]])
 
     for i in range(len(pos)):
         queryset.set(i, 'pos', pos[i])
     for i in range(len(neg)):
         queryset.set(i, 'neg', neg[i])
 
+if __name__=='__main__':
+    import dataloader
+    a = dataloader.TokyoTrainDataLoader(mode='db')
+    print(a.get_image(3))

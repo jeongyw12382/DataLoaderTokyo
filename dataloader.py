@@ -29,22 +29,32 @@ class TokyoTrainDataLoader(DataLoader):
 
     def __init__(self, mode, batch_size=4, collate_fn=make_batch, db_loader=None):
         self.data_set = dataset.TokyoTrainDataSet(mode=mode)
+        self.batch_size = batch_size
         super().__init__(self.data_set, batch_size=batch_size,
                          collate_fn=collate_fn
                          )
         if db_loader is not None:
             util.query_pos_neg(db_loader, self)
+
+    def get_image(self, idx):
+        ret = [self.dataset[idx * self.batch_size + j] for j in range(self.batch_size)]
+        return np.stack([image['image'] for image in ret])
 
 
 class TokyoValDataLoader(DataLoader):
 
     def __init__(self, mode, batch_size=4, collate_fn=make_batch, db_loader=None):
         self.data_set = dataset.TokyoValDataSet(mode=mode)
+        self.batch_size = batch_size
         super().__init__(self.data_set, batch_size=batch_size,
                          collate_fn=collate_fn
                          )
         if db_loader is not None:
             util.query_pos_neg(db_loader, self)
+
+    def get_image(self, idx):
+        ret = [self.dataset[idx * self.batch_size + j] for j in range(self.batch_size)]
+        return np.stack([image['image'] for image in ret])
 
 
 class Tokyo247DataLoader(DataLoader):
@@ -54,3 +64,4 @@ class Tokyo247DataLoader(DataLoader):
         super().__init__(self.data_set, batch_size=batch_size,
                          collate_fn=collate_fn
                          )
+
