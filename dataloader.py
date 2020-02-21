@@ -55,12 +55,11 @@ class Tokyo247DataLoader(DataLoader):
                          collate_fn=collate_fn
                          )
 
-a = TokyoTrainDataLoader(mode='db', batch_size=5)
-b = TokyoTrainDataLoader(mode='query', db_loader=a, batch_size=5)
 
-c = TokyoValDataLoader(mode='db')
-d = TokyoValDataLoader(mode='query', db_loader=c)
+if __name__=='__main__':
+    a = TokyoTrainDataLoader(mode='db', batch_size=5)
+    b = TokyoTrainDataLoader(mode='query', db_loader=a, batch_size=5)
+    c = b.dataset
 
-for data in a:
-    print(data)
-    break
+    c = TokyoValDataLoader(mode='db')
+    d = TokyoValDataLoader(mode='query', db_loader=c)
