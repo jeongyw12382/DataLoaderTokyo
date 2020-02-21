@@ -25,7 +25,6 @@ def query_pos_neg(dbloader, queryloader, pos_threshold=posThr, neg_threshold=neg
     qcoord = queryset.utm
 
     dist = euclidean_distances(qcoord, dbcoord)
-
     pos = []
     neg = []
     for mat in dist > neg_threshold:

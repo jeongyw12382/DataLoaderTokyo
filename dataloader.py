@@ -54,12 +54,3 @@ class Tokyo247DataLoader(DataLoader):
         super().__init__(self.data_set, batch_size=batch_size,
                          collate_fn=collate_fn
                          )
-
-
-if __name__=='__main__':
-    a = TokyoTrainDataLoader(mode='db', batch_size=5)
-    b = TokyoTrainDataLoader(mode='query', db_loader=a, batch_size=5)
-    c = b.dataset
-
-    c = TokyoValDataLoader(mode='db')
-    d = TokyoValDataLoader(mode='query', db_loader=c)
